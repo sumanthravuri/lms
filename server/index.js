@@ -13,13 +13,20 @@ const port=process.env.PORT||3000
 
 //deafult middlewares
 app.use(express.json())
-app.use(cookieParser)
+app.use(cookieParser());
 app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
-}))
+    origin: true,
+    credentials: true
+}));
 //apis
 app.use("/api/v1/user",userRoute)
+
+app.get("/home",(_,res)=>{
+    res.status(200).json({
+        success:true,
+        message:"hello iam from backend"
+    })
+})
 app.listen(port,()=>{
     console.log(`app listeninig on port ${port}`)
 })
