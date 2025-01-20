@@ -1,64 +1,72 @@
 import {User} from "../models/usermodel.js"
 
-import bycryptjs from "bcryptjs"
-import dotenv from "dotenv"
+import bycrypt from "bcryptjs"
 import { generateToken } from "../utils/generateToken.js"
-export const register=async(req,res)=>{
+export const register = async (req,res) => {
     try {
-        const {name,email,password}=req.body
-    if(!name||!email||!password){
-       return  res.status(400).json({
-            message:"All fileds are required"
+       
+        const {name, email, password} = req.body; 
+        if(!name || !email || !password){
+            return res.status(400).json({
+                success:false,
+                message:"All fields are required."
+            })
+        }
+        const user = await User.findOne({email});
+        if(user){
+            return res.status(400).json({
+                success:false,
+                message:"User already exist with this email."
+            })
+        }
+        const hashedPassword = await bycrypt.hash(password, 10);
+        await User.create({
+            name,
+            email,
+            password:hashedPassword
+        });
+        return res.status(201).json({
+            success:true,
+            message:"Account created successfully."
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"Failed to register"
         })
     }
-    const user= await User.findOne({email});
-    if(user){
-        return res.status(400).json(
-            {
-                message:"user already exists"
-            }
-        )
-    }
-    const hashedpassword=await bycryptjs.hash(password,10)
-    await User.create({
-        name,email,password:hashedpassword
-    })
-
-    } catch (error) {
-        console.log("error unable to register",error)
-    }
-    
-
 }
-export const login=async(req,res)=>{
+export const login = async (req,res) => {
     try {
-        const {email,password}=req.body
-    if(!email||!password){
-        res.status(400).json({
-            message:"All fileds are required"
-        })
-    }
-    const user= await User.findOne({email});
-    if(!user){
-        res.status(400).json(
-            {
-                message:"incorrect email or password"
-            }
-        )
-    }
-    const compare= await bycryptjs.compare(password,user.password)
-    if(!compare){
-        res.status(400).json(
-            {
-                message:"incorrect email or password"
-            }
-        )
-    }
-    generateToken(res,user,`hi user${user.username}`)
+        const {email, password} = req.body;
+        if(!email || !password){
+            return res.status(400).json({
+                success:false,
+                message:"All fields are required."
+            })
+        }
+        const user = await User.findOne({email});
+        if(!user){
+            return res.status(400).json({
+                success:false,
+                message:"Incorrect email or password"
+            })
+        }
+        const isPasswordMatch = await bycrypt.compare(password, user.password);
+        if(!isPasswordMatch){
+            return res.status(400).json({
+                success:false,
+                message:"Incorrect email or password"
+            });
+        }
+        generateToken(res, user, `Welcome back ${user.name}`);
 
     } catch (error) {
-        console.log("login error",error)
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"Failed to login"
+        })
     }
-    
-
 }
