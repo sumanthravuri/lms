@@ -1,5 +1,6 @@
 
 import './App.css'
+import Navbar from './components/navbar'
 import Login from './pages/Login'
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
 
   return (
    <>
+   <Navbar/>
    <Login/>
    </>
   )

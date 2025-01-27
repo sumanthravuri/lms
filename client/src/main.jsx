@@ -9,6 +9,5 @@ createRoot(document.getElementById('root')).render(
     <Provider store={appStore}>
     <App />
     </Provider>
-  
   </StrictMode>,
 )
