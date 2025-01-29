@@ -21,7 +21,8 @@ import {
   useRegisterUserMutation,
 } from "@/features/api/authApi";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
+
+import { useNavigate } from "react-router-dom";
 function Login() {
     const [signupInput,setSignupInput]=useState({name:"",email:"",password:""})
     const [loginInput,setLoginInput]=useState({email:"",password:""})
@@ -52,6 +53,7 @@ function Login() {
         isSuccess: loginIsSuccess,
       },
     ] = useLoginUserMutation();
+    const navigate = useNavigate();
     const handleRegistration = async (type) => {
       const inputData = type === "signup" ? signupInput : loginInput;
       const action = type === "signup" ? registerUser : loginUser;
@@ -61,9 +63,11 @@ function Login() {
       } catch (err) {
         const errorMessage = err.response?.data?.message || err.message || 'An unexpected error occurred';
         console.log(errorMessage);
-        toast.error(errorMessage);
       }
     };
+    if(loginIsSuccess && loginData){
+      navigate("/");
+    }
 
     
   return (
