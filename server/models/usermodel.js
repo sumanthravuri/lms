@@ -20,8 +20,7 @@ const userschema=mongoose.Schema(
     },
     enrolledCourses:[
         {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Course"
+        type:Array
         }
     ],photoUrl:{
         type:String,

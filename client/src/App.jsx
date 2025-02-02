@@ -35,7 +35,7 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "mylearning",
+        path: "my-learning",
         element: (
           
             <MyLearning/>

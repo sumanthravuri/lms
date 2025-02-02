@@ -4,13 +4,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 
 
-const Course = () => {
+const Course = ({course}) => {
   return (
     
     <Card className="overflow-hidden rounded-lg dark:bg-gray-800 bg-white shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
       <div className="relative">
         <img
-          src="https://miro.medium.com/v2/resize:fit:1400/1*tDvPpTA8Jw5P_B5xV8gsjw.jpeg"
+          src={"https://miro.medium.com/v2/resize:fit:1400/1*tDvPpTA8Jw5P_B5xV8gsjw.jpeg"}
           alt="course"
           className="w-full h-36 object-cover rounded-t-lg"
         />
